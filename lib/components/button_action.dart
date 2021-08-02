@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 class ButtonAction extends StatelessWidget {
   late String title;
   late var onClick;
+  late var color;
   ButtonAction({
     required this.title,
     required this.onClick,
+    required this.color,
   });
   @override
   Widget build(BuildContext context) {
@@ -16,11 +18,11 @@ class ButtonAction extends StatelessWidget {
       child: InkWell(
         onTap: onClick,
         child: Container(
-          width: size.width * 0.73,
-          height: size.height * 0.072,
+          width: size.width * 0.75,
+          height: size.height * 0.075,
           decoration: BoxDecoration(
-            color: appColor,
-            borderRadius: BorderRadius.circular(15.0),
+            color: color,
+            borderRadius: BorderRadius.circular(8.0),
           ),
           child: Center(
             child: Text(
@@ -29,7 +31,7 @@ class ButtonAction extends StatelessWidget {
                 fontFamily: appFont1,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 15.0,
+                fontSize: 16.0,
               ),
             ),
           ),

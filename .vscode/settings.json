@@ -1,5 +1,6 @@
 {
-     "editor.fontSize": 18.5,
+     "editor.fontSize": 15.8,
      "editor.tabSize": 5,
-     "editor.fontFamily": "'Ubuntu Mono','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'"
+     "terminal.integrated.fontSize": 13,
+     "editor.codeLensFontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'"
 }
