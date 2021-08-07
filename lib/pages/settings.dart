@@ -1,21 +1,31 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_planner/bloc_services/auth_bloc/auth_Events.dart';
 import 'package:daily_planner/bloc_services/auth_bloc/auth_bloc.dart';
 import 'package:daily_planner/bloc_services/auth_bloc/auth_states.dart';
+import 'package:daily_planner/bloc_services/user_bloc/user_States.dart';
+import 'package:daily_planner/bloc_services/user_bloc/user_bloc.dart';
+import 'package:daily_planner/bloc_services/user_bloc/user_events.dart';
 import 'package:daily_planner/components/Settings_comp_view.dart';
+import 'package:daily_planner/components/switch_pages.dart';
 import 'package:daily_planner/pages/constants.dart';
 import 'package:daily_planner/pages/home.dart';
+import 'package:daily_planner/pages/setting_components/change_password.dart';
+import 'package:daily_planner/pages/setting_components/edit_profile.dart';
 import 'package:daily_planner/pages/splash_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Settings extends StatefulWidget {
+class Settingpage extends StatefulWidget {
   @override
-  _SettingsState createState() => _SettingsState();
+  _SettingpageState createState() => _SettingpageState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingpageState extends State<Settingpage> {
+  var name, email, image;
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -27,6 +37,9 @@ class _SettingsState extends State<Settings> {
     );
     var height = MediaQuery.of(context).size.height;
     var authProvider = BlocProvider.of<AuthBloc>(context);
+    var userProvider = BlocProvider.of<UserBloc>(context);
+    userProvider.model = FirebaseAuth.instance.currentUser!.uid;
+    userProvider.add(FetchSpecialUserEvent());
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -41,29 +54,15 @@ class _SettingsState extends State<Settings> {
               SizedBox(
                 height: height * 0.04,
               ),
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () => Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => Home(),
-                      ),
+              SwitchPages(
+                title: "",
+                onClick: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => Home(),
                     ),
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      size: 20.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    "Settings",
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      fontFamily: appFont1,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
               SizedBox(
                 height: height * 0.05,
@@ -83,16 +82,50 @@ class _SettingsState extends State<Settings> {
                       child: CircleAvatar(
                         backgroundColor: Colors.grey[200],
                         radius: 25.0,
-                        child: ClipOval(
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: userImage,
-                            placeholder: (context, url) =>
-                                CircularProgressIndicator(),
-                            errorWidget: (context, url, error) => Image(
-                              image: AssetImage(userImage),
-                            ),
-                          ),
+                        child: BlocBuilder<UserBloc, UserStates>(
+                          builder: (context, state) {
+                            var response;
+                            var result;
+                            if (state is UserLoadingState) {
+                              return CircularProgressIndicator();
+                            } else if (state is UserLoadedState) {
+                              response = state.response;
+                            } else if (state is UserLoadingFailedState) {
+                              result = false;
+                            }
+                            return StreamBuilder<DocumentSnapshot>(
+                              stream: response,
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  result = false;
+                                  name = "UnKnown";
+                                  email = "UnKnown";
+                                  image = "null";
+                                } else if (snapshot.hasData) {
+                                  print("object");
+                                  name = snapshot.data!["name"];
+                                  email = snapshot.data!["email"];
+                                  image = snapshot.data!["image"];
+                                }
+                                return result == false && image == "null"
+                                    ? Image(
+                                        image: AssetImage(userImage),
+                                      )
+                                    : ClipOval(
+                                        child: CachedNetworkImage(
+                                          fit: BoxFit.cover,
+                                          imageUrl: image,
+                                          placeholder: (context, url) =>
+                                              CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              Image(
+                                            image: AssetImage(userImage),
+                                          ),
+                                        ),
+                                      );
+                              },
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -101,7 +134,7 @@ class _SettingsState extends State<Settings> {
                     height: 8.0,
                   ),
                   Text(
-                    "Ahmed Talal",
+                    name == null ? "UnKnown" : name.toString(),
                     style: TextStyle(
                       fontSize: 13.0,
                       fontFamily: appFont1,
@@ -138,7 +171,18 @@ class _SettingsState extends State<Settings> {
                 height: 10.0,
               ),
               SettingComponentsView(
-                onClick: () {},
+                onClick: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EditProfile(
+                        name: name,
+                        email: email,
+                        image: image,
+                        id: userProvider.model,
+                      ),
+                    ),
+                  );
+                },
                 hint: "Edit profile",
                 icon: editImage,
                 color: Colors.red,
@@ -147,7 +191,13 @@ class _SettingsState extends State<Settings> {
                 height: 10.0,
               ),
               SettingComponentsView(
-                onClick: () {},
+                onClick: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ChangePassword(),
+                    ),
+                  );
+                },
                 hint: "Change Password",
                 icon: changePassword,
                 color: Colors.blue,
@@ -233,16 +283,6 @@ class _SettingsState extends State<Settings> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  void snackbarValidate(String s, BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          s,
         ),
       ),
     );

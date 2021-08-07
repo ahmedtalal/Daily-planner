@@ -32,13 +32,20 @@ class UserOperations extends FirebaseRepositoryModel {
 
   @override
   getSpecialData(model) {
-    // TODO: implement getSpecialData
-    throw UnimplementedError();
+    CollectionReference collRef = _firestore.collection("Users");
+    DocumentReference docRef = collRef.doc(model);
+    return docRef.snapshots();
   }
 
   @override
-  updateData(model) {
-    // TODO: implement updateData
-    throw UnimplementedError();
+  updateData(model) async {
+    var result = false;
+    CollectionReference collRef = _firestore.collection("Users");
+    DocumentReference docRef = collRef.doc(model.id);
+    Map<String, dynamic> data = UserModel.toJson(model);
+    await docRef.update(data).whenComplete(() {
+      result = true;
+    });
+    return result;
   }
 }

@@ -16,17 +16,19 @@ class HomeBody extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return InkWell(
       onTap: onClick,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
-            radius: 16.0,
+            radius: 14.0,
             backgroundColor: color,
             child: Icon(
               icon,
-              size: 16.0,
+              size: 12.0,
               color: Colors.white,
             ),
           ),
@@ -35,14 +37,18 @@ class HomeBody extends StatelessWidget {
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 17.0,
+                  fontSize: 15.0,
                   fontFamily: appFont1,
                   fontWeight: FontWeight.bold,
                 ),
+              ),
+              SizedBox(
+                height: 4.0,
               ),
               Text(
                 sunTitle,
@@ -52,6 +58,14 @@ class HomeBody extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: Colors.black26,
                 ),
+              ),
+              SizedBox(
+                height: 6.0,
+              ),
+              Container(
+                height: 0.8,
+                width: size.width * 0.8,
+                color: Colors.grey,
               ),
             ],
           ),

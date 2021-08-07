@@ -33,3 +33,17 @@ class LogOutFailedState extends AuthStates {
     required this.message,
   });
 }
+
+class UpdatePassSucessState extends AuthStates {
+  var message;
+  UpdatePassSucessState({
+    required this.message,
+  });
+}
+
+class UpdatePassFailedState extends AuthStates {
+  var error;
+  UpdatePassFailedState({
+    required this.error,
+  });
+}

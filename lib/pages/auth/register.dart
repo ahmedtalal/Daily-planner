@@ -136,6 +136,9 @@ class _RegisterState extends State<Register> {
                             ),
                           );
                         } else if (state is RegisterFailedState) {
+                          setState(() {
+                            isProgressed = false;
+                          });
                           snackbarValidate(state.message, context);
                         }
                       },
@@ -212,19 +215,6 @@ class _RegisterState extends State<Register> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  void snackbarValidate(String s, BuildContext context) {
-    setState(() {
-      isProgressed = false;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          s,
         ),
       ),
     );

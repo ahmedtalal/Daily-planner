@@ -55,8 +55,8 @@ class AuthOperations extends AuthRepositoryModel {
   }
 
   @override
-  updatePassword(model) {
-    // TODO: implement updatePassword
-    throw UnimplementedError();
+  updatePassword(model) async {
+    User user = _auth.currentUser!;
+    await user.updatePassword(model);
   }
 }

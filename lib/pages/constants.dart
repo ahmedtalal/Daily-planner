@@ -3,7 +3,8 @@ import 'package:flutter/painting.dart';
 
 const String splash1 = "assets/images/splash1.png";
 const String splash2 = "assets/images/splash2.jpg";
-const String appFont1 = "tit";
+const String appFont_1 = "tit";
+const String appFont1 = "sourceSans";
 const String descriptionSplash =
     "A daily planner app is an app that helps you get organized and keeps all of your daily tasks";
 const Color appColor = Color.fromRGBO(129, 225, 162, 1);
@@ -20,3 +21,14 @@ const String rateAppImage = "assets/images/rate.png";
 const String shareAppImage = "assets/images/share.png";
 const String changePassword = "assets/images/changepassword.png";
 const String editImage = "assets/images/edit.png";
+const String listIcon = "assets/images/listIcon.png";
+
+void snackbarValidate(String s, BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        s,
+      ),
+    ),
+  );
+}

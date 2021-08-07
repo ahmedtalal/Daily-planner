@@ -1,5 +1,6 @@
 import 'package:daily_planner/bloc_services/auth_bloc/auth_Events.dart';
 import 'package:daily_planner/bloc_services/auth_bloc/auth_states.dart';
+import 'package:daily_planner/database/firebase/auth_operations.dart';
 import 'package:daily_planner/database/repository/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,7 +48,16 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         await repostory.logOut();
         yield LogOutSucessState();
       } catch (e) {
-        yield LogOutFailedState(message: "lgout unscussefull");
+        yield LogOutFailedState(message: "logout unscussefull");
+      }
+    } else if (event is UpdatePasswordEvent) {
+      try {
+        await AuthOperations().updatePassword(model);
+        yield UpdatePassSucessState(
+            message:
+                "Password has been successfully updated, Now you can logout and try writting the new password");
+      } catch (e) {
+        yield UpdatePassFailedState(error: 'The operation failed');
       }
     }
   }

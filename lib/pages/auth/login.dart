@@ -143,6 +143,9 @@ class _LoginState extends State<Login> {
                             ),
                           );
                         } else if (state is LoginFailedState) {
+                          setState(() {
+                            isProgressed = false;
+                          });
                           snackbarValidate(state.message, context);
                         }
                       },
@@ -213,19 +216,6 @@ class _LoginState extends State<Login> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  void snackbarValidate(String s, BuildContext context) {
-    setState(() {
-      isProgressed = false;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          s,
         ),
       ),
     );
