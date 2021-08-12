@@ -1,7 +1,8 @@
 class TaskModel {
-  late String task, date, description, category, firstTime, lastTime;
+  late String taskId, task, date, description, category, firstTime, lastTime;
   late bool isDone;
   TaskModel({
+    required this.taskId,
     required this.task,
     required this.date,
     required this.description,
@@ -12,6 +13,7 @@ class TaskModel {
   });
 
   TaskModel.fromJson(Map<String, dynamic> data) {
+    this.taskId = data["taskId"];
     this.task = data["task"];
     this.date = data["date"];
     this.description = data["description"];
@@ -22,6 +24,7 @@ class TaskModel {
   }
 
   static Map<String, dynamic> toJson(TaskModel model) => {
+        "taskId": model.taskId,
         "task": model.task,
         "date": model.date,
         "description": model.description,

@@ -1,6 +1,7 @@
 import 'package:daily_planner/pages/constants.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class TimeTextField extends StatelessWidget {
   late String message;
   late var onClick;
@@ -15,39 +16,43 @@ class TimeTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 48.0,
-      width: 150.0,
+      height: 42.0,
+      width: 140.0,
       child: TextFormField(
+        style: TextStyle(
+          fontSize: 14.0,
+          fontFamily: appFont1,
+        ),
         onChanged: onClick,
         validator: onValidate,
         decoration: InputDecoration(
           hintText: message,
           hintStyle: TextStyle(
-            fontSize: 14.0,
+            fontSize: 13.0,
             fontFamily: appFont1,
             color: Colors.black,
           ),
           prefixIcon: Icon(
             icon,
             color: Colors.black,
-            size: 17.0,
+            size: 15.0,
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(12.0),
             borderSide: BorderSide(
               color: Colors.grey,
               width: 0.5,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(12.0),
             borderSide: BorderSide(
               color: Colors.grey,
               width: 0.5,
             ),
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(12.0),
             borderSide: BorderSide(
               color: Colors.grey,
               width: 0.5,

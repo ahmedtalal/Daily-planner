@@ -24,7 +24,7 @@ class HomeBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
-            radius: 14.0,
+            radius: 13.0,
             backgroundColor: color,
             child: Icon(
               icon,
@@ -42,7 +42,7 @@ class HomeBody extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 15.0,
+                  fontSize: 14.0,
                   fontFamily: appFont1,
                   fontWeight: FontWeight.bold,
                 ),
@@ -55,8 +55,7 @@ class HomeBody extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12.0,
                   fontFamily: appFont1,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black26,
+                  color: Colors.black54,
                 ),
               ),
               SizedBox(

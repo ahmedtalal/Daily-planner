@@ -7,7 +7,9 @@ import 'package:daily_planner/bloc_services/user_bloc/user_States.dart';
 import 'package:daily_planner/bloc_services/user_bloc/user_bloc.dart';
 import 'package:daily_planner/bloc_services/user_bloc/user_events.dart';
 import 'package:daily_planner/components/Settings_comp_view.dart';
+import 'package:daily_planner/components/appbar_widget.dart';
 import 'package:daily_planner/components/switch_pages.dart';
+import 'package:daily_planner/pages/activities/activity_type.dart';
 import 'package:daily_planner/pages/constants.dart';
 import 'package:daily_planner/pages/home.dart';
 import 'package:daily_planner/pages/setting_components/change_password.dart';
@@ -15,7 +17,6 @@ import 'package:daily_planner/pages/setting_components/edit_profile.dart';
 import 'package:daily_planner/pages/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Settingpage extends StatefulWidget {
@@ -28,13 +29,6 @@ class _SettingpageState extends State<Settingpage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Colors.white,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
     var height = MediaQuery.of(context).size.height;
     var authProvider = BlocProvider.of<AuthBloc>(context);
     var userProvider = BlocProvider.of<UserBloc>(context);
@@ -43,71 +37,59 @@ class _SettingpageState extends State<Settingpage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppbarWidget.getAppBar("Settings", context),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
-            left: 12.0,
+            left: 10.0,
             right: 10.0,
           ),
           child: ListView(
             children: [
               SizedBox(
-                height: height * 0.04,
+                height: 20.0,
               ),
-              SwitchPages(
-                title: "",
-                onClick: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => Home(),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(
-                height: height * 0.05,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 70.0,
-                    width: 75.0,
-                    decoration: BoxDecoration(
-                      color: Colors.blue[50],
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.grey[200],
-                        radius: 25.0,
-                        child: BlocBuilder<UserBloc, UserStates>(
-                          builder: (context, state) {
-                            var response;
-                            var result;
-                            if (state is UserLoadingState) {
-                              return CircularProgressIndicator();
-                            } else if (state is UserLoadedState) {
-                              response = state.response;
-                            } else if (state is UserLoadingFailedState) {
-                              result = false;
-                            }
-                            return StreamBuilder<DocumentSnapshot>(
-                              stream: response,
-                              builder: (context, snapshot) {
-                                if (!snapshot.hasData) {
-                                  result = false;
-                                  name = "UnKnown";
-                                  email = "UnKnown";
-                                  image = "null";
-                                } else if (snapshot.hasData) {
-                                  print("object");
-                                  name = snapshot.data!["name"];
-                                  email = snapshot.data!["email"];
-                                  image = snapshot.data!["image"];
-                                }
-                                return result == false && image == "null"
+              BlocBuilder<UserBloc, UserStates>(
+                builder: (context, state) {
+                  var response;
+                  var result;
+                  if (state is UserLoadingState) {
+                    return CircularProgressIndicator();
+                  } else if (state is UserLoadedState) {
+                    response = state.response;
+                  } else if (state is UserLoadingFailedState) {
+                    result = false;
+                  }
+                  return StreamBuilder<DocumentSnapshot>(
+                    stream: response,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        result = false;
+                        name = "UnKnown";
+                        email = "UnKnown";
+                        image = "null";
+                      } else if (snapshot.hasData) {
+                        print("object");
+                        name = snapshot.data!["name"];
+                        email = snapshot.data!["email"];
+                        image = snapshot.data!["image"];
+                      }
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 65.0,
+                            width: 70.0,
+                            decoration: BoxDecoration(
+                              color: Colors.blue[50],
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.grey[200],
+                                radius: 21.0,
+                                child: result == false && image == "null"
                                     ? Image(
                                         image: AssetImage(userImage),
                                       )
@@ -122,41 +104,41 @@ class _SettingpageState extends State<Settingpage> {
                                             image: AssetImage(userImage),
                                           ),
                                         ),
-                                      );
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  Text(
-                    name == null ? "UnKnown" : name.toString(),
-                    style: TextStyle(
-                      fontSize: 13.0,
-                      fontFamily: appFont1,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 3.0,
-                  ),
-                  Text(
-                    "User",
-                    style: TextStyle(
-                      fontSize: 10.0,
-                      fontFamily: appFont1,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+                                      ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8.0,
+                          ),
+                          Text(
+                            name,
+                            style: TextStyle(
+                              fontSize: 13.0,
+                              fontFamily: appFont1,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 3.0,
+                          ),
+                          Text(
+                            "User",
+                            style: TextStyle(
+                              fontSize: 10.0,
+                              fontFamily: appFont1,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
               SizedBox(
-                height: 15.0,
+                height: 10.0,
               ),
               Text(
                 "Profile",
@@ -168,7 +150,7 @@ class _SettingpageState extends State<Settingpage> {
                 ),
               ),
               SizedBox(
-                height: 10.0,
+                height: 8.0,
               ),
               SettingComponentsView(
                 onClick: () {
@@ -188,7 +170,7 @@ class _SettingpageState extends State<Settingpage> {
                 color: Colors.red,
               ),
               SizedBox(
-                height: 10.0,
+                height: 8.0,
               ),
               SettingComponentsView(
                 onClick: () {
@@ -248,7 +230,120 @@ class _SettingpageState extends State<Settingpage> {
                 height: 10.0,
               ),
               SettingComponentsView(
-                onClick: () {},
+                onClick: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text(
+                          "Choose activty type",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontFamily: appFont1,
+                            color: Colors.black,
+                          ),
+                        ),
+                        actions: [
+                          Center(
+                            child: Container(
+                              width: 130.0,
+                              height: 38.0,
+                              decoration: BoxDecoration(
+                                color: homeColor,
+                                borderRadius: BorderRadius.circular(40.0),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ActivityType(type: "study"),
+                                    ),
+                                  );
+                                },
+                                child: Center(
+                                  child: Text(
+                                    "study",
+                                    style: TextStyle(
+                                      fontFamily: appFont1,
+                                      fontSize: 17.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10.0),
+                          Center(
+                            child: Container(
+                              width: 130.0,
+                              height: 38.0,
+                              decoration: BoxDecoration(
+                                color: homeColor,
+                                borderRadius: BorderRadius.circular(40.0),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ActivityType(type: "work"),
+                                    ),
+                                  );
+                                },
+                                child: Center(
+                                  child: Text(
+                                    "work",
+                                    style: TextStyle(
+                                      fontFamily: appFont1,
+                                      fontSize: 17.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10.0),
+                          Center(
+                            child: Container(
+                              width: 130.0,
+                              height: 38.0,
+                              decoration: BoxDecoration(
+                                color: homeColor,
+                                borderRadius: BorderRadius.circular(40.0),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ActivityType(type: "personal"),
+                                    ),
+                                  );
+                                },
+                                child: Center(
+                                  child: Text(
+                                    "personal",
+                                    style: TextStyle(
+                                      fontFamily: appFont1,
+                                      fontSize: 17.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
                 hint: "Activities",
                 icon: logoutImage,
                 color: Colors.purple,

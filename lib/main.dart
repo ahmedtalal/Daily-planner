@@ -1,5 +1,7 @@
+import 'package:daily_planner/bloc_services/task_bloc/task_bloc.dart';
 import 'package:daily_planner/bloc_services/user_bloc/user_bloc.dart';
 import 'package:daily_planner/database/firebase/auth_operations.dart';
+import 'package:daily_planner/database/firebase/task_operations.dart';
 import 'package:daily_planner/database/firebase/user_operations.dart';
 import 'package:daily_planner/pages/home.dart';
 import 'package:daily_planner/pages/splash_screen.dart';
@@ -42,6 +44,14 @@ class MyApp extends StatelessWidget {
           create: (context) {
             return UserBloc(
               repositoryModel: UserOperations(),
+            );
+          },
+        ),
+        // task Bloc
+        BlocProvider<TaskBloc>(
+          create: (context) {
+            return TaskBloc(
+              repositoryModel: TaskOperations(),
             );
           },
         ),

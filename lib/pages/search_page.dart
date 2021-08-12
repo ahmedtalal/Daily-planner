@@ -1,3 +1,4 @@
+import 'package:daily_planner/components/appbar_widget.dart';
 import 'package:daily_planner/components/auth_text_input.dart';
 import 'package:daily_planner/components/switch_pages.dart';
 import 'package:daily_planner/pages/constants.dart';
@@ -11,50 +12,25 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppbarWidget.getAppBar("search", context),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: size.height * 0.29,
-              decoration: BoxDecoration(
-                color: homeColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(35.0),
-                  bottomRight: Radius.circular(35.0),
-                ),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AuthTextInput(
+                initialValue: "",
+                message: "Search",
+                icon: Icons.search,
+                onClick: (newValue) {},
+                onValidate: (value) {},
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: size.height * 0.03,
-                    ),
-                    SwitchPages(
-                      title: "search",
-                      onClick: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    SizedBox(
-                      height: 18.0,
-                    ),
-                    AuthTextInput(
-                      message: "Search",
-                      icon: Icons.search,
-                      onClick: (newValue) {},
-                      onValidate: (value) {},
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

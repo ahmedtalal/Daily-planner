@@ -23,16 +23,16 @@ class SettingComponentsView extends StatelessWidget {
           Row(
             children: [
               CircleAvatar(
-                radius: 15.0,
+                radius: 13.0,
                 backgroundColor: color,
                 child: Image(
                   image: AssetImage(icon),
-                  height: 14.0,
+                  height: 12.0,
                   color: Colors.white,
                 ),
               ),
               SizedBox(
-                width: 12.0,
+                width: 10.0,
               ),
               Text(
                 hint,
@@ -47,7 +47,7 @@ class SettingComponentsView extends StatelessWidget {
           ),
           Icon(
             Icons.arrow_forward_ios,
-            size: 15.0,
+            size: 13.0,
           ),
         ],
       ),

@@ -1,3 +1,13 @@
 abstract class TaskEvents {}
 
-class CreateTaskEvent {}
+class CreateTaskEvent extends TaskEvents {}
+
+class ShowCurrentTasksEvent extends TaskEvents {}
+
+class UpdateTaskEvent extends TaskEvents {}
+
+class DeleteTaskEvent extends TaskEvents {}
+
+class ArchiveTaskEvent extends TaskEvents {}
+
+class ShowArchiveTasksEvent extends TaskEvents {}

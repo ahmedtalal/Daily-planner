@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daily_planner/bloc_services/user_bloc/user_States.dart';
 import 'package:daily_planner/bloc_services/user_bloc/user_bloc.dart';
 import 'package:daily_planner/bloc_services/user_bloc/user_events.dart';
+import 'package:daily_planner/components/appbar_widget.dart';
 import 'package:daily_planner/components/button_action.dart';
 import 'package:daily_planner/components/switch_pages.dart';
 import 'package:daily_planner/components/text_input_controller.dart';
@@ -51,6 +52,7 @@ class _EditProfileState extends State<EditProfile> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppbarWidget.getAppBar("Edit Profile", context),
       body: ModalProgressHUD(
         inAsyncCall: isProgress,
         child: SafeArea(
@@ -61,23 +63,14 @@ class _EditProfileState extends State<EditProfile> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: size.height * 0.04,
-                  ),
-                  SwitchPages(
-                    title: "Edit Profile",
-                    onClick: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  SizedBox(
                     height: 20.0,
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: 70.0,
-                        width: 75.0,
+                        height: 65.0,
+                        width: 70.0,
                         decoration: BoxDecoration(
                           color: Colors.blue[50],
                           borderRadius: BorderRadius.circular(10.0),
@@ -86,7 +79,7 @@ class _EditProfileState extends State<EditProfile> {
                           alignment: Alignment.center,
                           child: CircleAvatar(
                             backgroundColor: Colors.grey[200],
-                            radius: 25.0,
+                            radius: 20.0,
                             child: ClipOval(
                               child: CachedNetworkImage(
                                 fit: BoxFit.cover,

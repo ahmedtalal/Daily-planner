@@ -19,10 +19,10 @@ class ActivityView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 120,
-      width: 100,
+      height: 100.0,
+      width: 100.0,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.0),
+        borderRadius: BorderRadius.circular(12.0),
         color: color,
       ),
       child: Column(

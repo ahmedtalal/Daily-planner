@@ -76,6 +76,7 @@ class _RegisterState extends State<Register> {
                     child: Column(
                       children: [
                         AuthTextInput(
+                          initialValue: "",
                           message: "Name",
                           icon: Icons.person,
                           onClick: (newValue) {
@@ -92,6 +93,7 @@ class _RegisterState extends State<Register> {
                           height: 15.0,
                         ),
                         AuthTextInput(
+                          initialValue: "",
                           message: "Email",
                           icon: Icons.email,
                           onClick: (newValue) {
@@ -108,6 +110,7 @@ class _RegisterState extends State<Register> {
                           height: 15.0,
                         ),
                         AuthTextInput(
+                          initialValue: "",
                           message: "password",
                           icon: Icons.lock,
                           onClick: (newValue) {

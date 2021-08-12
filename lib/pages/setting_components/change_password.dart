@@ -1,6 +1,7 @@
 import 'package:daily_planner/bloc_services/auth_bloc/auth_Events.dart';
 import 'package:daily_planner/bloc_services/auth_bloc/auth_bloc.dart';
 import 'package:daily_planner/bloc_services/auth_bloc/auth_states.dart';
+import 'package:daily_planner/components/appbar_widget.dart';
 import 'package:daily_planner/components/auth_text_input.dart';
 import 'package:daily_planner/components/switch_pages.dart';
 import 'package:daily_planner/pages/constants.dart';
@@ -24,6 +25,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppbarWidget.getAppBar("Change Password", context),
       body: ModalProgressHUD(
         inAsyncCall: isProgressed,
         child: SafeArea(
@@ -34,16 +36,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: size.height * 0.04,
-                ),
-                SwitchPages(
-                  title: "Change Password",
-                  onClick: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                SizedBox(
-                  height: size.height * 0.1,
+                  height: 15.0,
                 ),
                 Form(
                   child: Column(
@@ -52,6 +45,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         width: size.width * 0.8,
                         height: size.height * 0.073,
                         child: AuthTextInput(
+                          initialValue: "",
                           message: "new password",
                           icon: Icons.lock,
                           onClick: (newValue) {

@@ -78,6 +78,7 @@ class _LoginState extends State<Login> {
                           height: 15.0,
                         ),
                         AuthTextInput(
+                          initialValue: "",
                           message: "Email",
                           icon: Icons.email,
                           onClick: (newValue) {
@@ -94,6 +95,7 @@ class _LoginState extends State<Login> {
                           height: 15.0,
                         ),
                         AuthTextInput(
+                          initialValue: "",
                           message: "password",
                           icon: Icons.lock,
                           onClick: (newValue) {

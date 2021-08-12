@@ -17,15 +17,13 @@ class SwitchPages extends StatelessWidget {
           child: Icon(
             Icons.arrow_back_ios,
             size: 20.0,
-            color: title == "search" || title == "task"
-                ? Colors.white
-                : Colors.black,
+            color: title == "search" ? Colors.white : Colors.black,
           ),
         ),
         Text(
-          title == "search" || title == "task" ? "" : title,
+          title == "search" ? "" : title,
           style: TextStyle(
-            fontSize: 14.0,
+            fontSize: 17.0,
             fontFamily: appFont1,
             fontWeight: FontWeight.bold,
           ),

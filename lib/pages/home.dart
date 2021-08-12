@@ -1,14 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:daily_planner/bloc_services/task_bloc/task_bloc.dart';
+import 'package:daily_planner/bloc_services/task_bloc/task_events.dart';
+import 'package:daily_planner/bloc_services/task_bloc/task_states.dart';
 import 'package:daily_planner/bloc_services/user_bloc/user_States.dart';
 import 'package:daily_planner/bloc_services/user_bloc/user_bloc.dart';
 import 'package:daily_planner/bloc_services/user_bloc/user_events.dart';
 import 'package:daily_planner/components/activity_view.dart';
 import 'package:daily_planner/components/home_body.dart';
+import 'package:daily_planner/models/task_model.dart';
+import 'package:daily_planner/pages/activities/activity_type.dart';
 import 'package:daily_planner/pages/constants.dart';
 import 'package:daily_planner/pages/create_task.dart';
 import 'package:daily_planner/pages/search_page.dart';
 import 'package:daily_planner/pages/settings.dart';
+import 'package:daily_planner/pages/task_operations/archive_tasks.dart';
+import 'package:daily_planner/pages/task_operations/done_tasks.dart';
+import 'package:daily_planner/pages/task_operations/today_tasks.dart';
+import 'package:daily_planner/pages/task_operations/todo_tasks.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,6 +44,8 @@ class _HomeState extends State<Home> {
     var userProvider = BlocProvider.of<UserBloc>(context);
     userProvider.model = FirebaseAuth.instance.currentUser!.uid;
     userProvider.add(FetchSpecialUserEvent());
+    var taskProvider = BlocProvider.of<TaskBloc>(context);
+    taskProvider.add(ShowCurrentTasksEvent());
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -58,265 +69,326 @@ class _HomeState extends State<Home> {
   }
 
   Widget _header(var size) {
-    return Expanded(
-      child: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: homeColor,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(35.0),
-            bottomRight: Radius.circular(35.0),
-          ),
-        ),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => Settingpage(),
-                        ),
-                      );
-                    },
-                    child: Image(
-                      image: AssetImage(listIcon),
-                      height: 20.0,
-                      width: 20.0,
-                      color: Colors.white,
+    return Container(
+      height: 95,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: homeColor,
+      ),
+      child: BlocBuilder<UserBloc, UserStates>(
+        builder: (context, state) {
+          var response;
+          var result;
+          var image, name;
+          if (state is UserLoadingState) {
+            return CircularProgressIndicator();
+          } else if (state is UserLoadedState) {
+            response = state.response;
+          } else if (state is UserLoadingFailedState) {
+            result = false;
+          }
+          return StreamBuilder<DocumentSnapshot>(
+            stream: response,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                result = false;
+                name = "UnKnown";
+                image = "null";
+              } else if (snapshot.hasData) {
+                print("object");
+                name = snapshot.data!["name"];
+                image = snapshot.data!["image"];
+              }
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 10.0,
                     ),
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => SearchPage(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Hi, " + name,
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontFamily: appFont1,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      );
-                    },
-                    child: Icon(
-                      Icons.search,
-                      size: 19.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 13.0,
-            ),
-            Center(
-              child: BlocBuilder<UserBloc, UserStates>(
-                builder: (context, state) {
-                  var response;
-                  var result;
-                  var image, name;
-                  if (state is UserLoadingState) {
-                    return CircularProgressIndicator();
-                  } else if (state is UserLoadedState) {
-                    response = state.response;
-                  } else if (state is UserLoadingFailedState) {
-                    result = false;
-                  }
-                  return StreamBuilder<DocumentSnapshot>(
-                    stream: response,
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        result = false;
-                        name = "UnKnown";
-                        image = "null";
-                      } else if (snapshot.hasData) {
-                        print("object");
-                        name = snapshot.data!["name"];
-                        image = snapshot.data!["image"];
-                      }
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: size.height * 0.1,
-                            width: size.width * 0.3,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: borderColor,
-                                width: 2.5,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => Settingpage(),
+                                  ),
+                                );
+                              },
+                              child: Icon(
+                                Icons.settings,
+                                size: 17.0,
+                                color: Colors.white,
                               ),
                             ),
-                            child: CircleAvatar(
-                              radius: 20.0,
-                              backgroundColor: homeColor,
-                              child: result == false && image == "null"
-                                  ? Image(
-                                      height: 40.0,
-                                      width: 40.0,
-                                      image: AssetImage(
-                                        userImage,
-                                      ),
-                                    )
-                                  : ClipOval(
-                                      child: CachedNetworkImage(
-                                        height: 40.0,
-                                        width: 40.0,
-                                        fit: BoxFit.cover,
-                                        imageUrl: image,
-                                        placeholder: (context, url) =>
-                                            CircularProgressIndicator(),
-                                        errorWidget: (context, url, error) =>
-                                            Image(
-                                          image: AssetImage(userImage),
+                            SizedBox(
+                              width: 8.0,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => SearchPage(),
+                                  ),
+                                );
+                              },
+                              child: Icon(
+                                Icons.search,
+                                size: 17.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 15.0,
+                            ),
+                            Container(
+                              height: 30,
+                              width: 30,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: borderColor,
+                                  width: 1,
+                                ),
+                              ),
+                              child: CircleAvatar(
+                                radius: 10.0,
+                                backgroundColor: homeColor,
+                                child: result == false && image == "null"
+                                    ? Image(
+                                        height: 16.0,
+                                        width: 16.0,
+                                        image: AssetImage(
+                                          userImage,
+                                        ),
+                                      )
+                                    : ClipOval(
+                                        child: CachedNetworkImage(
+                                          height: 26.0,
+                                          width: 26.0,
+                                          fit: BoxFit.cover,
+                                          imageUrl: image,
+                                          placeholder: (context, url) =>
+                                              CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              Image(
+                                            image: AssetImage(userImage),
+                                          ),
                                         ),
                                       ),
-                                    ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 19.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "today tasks",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontFamily: appFont1,
+                            color: Colors.white,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => TodayTasks(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(top: 5.0),
+                            width: 25.0,
+                            height: 16.0,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 0.6,
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.arrow_right,
+                              size: 16.0,
+                              color: Colors.white,
                             ),
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                name,
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontFamily: appFont1,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                "Orginal User",
-                                style: TextStyle(
-                                  fontSize: 13.0,
-                                  fontFamily: appFont1,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
 
   Widget _body(var size) {
     return Expanded(
-      flex: 2,
+      flex: 3,
       child: Padding(
         padding: EdgeInsets.all(10.0),
         child: Container(
           height: double.infinity,
           width: double.infinity,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "My Tasks",
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontFamily: appFont1,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => CreateTask(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        height: 25.0,
-                        width: 25.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: addColor,
+          child: BlocBuilder<TaskBloc, TaskStates>(
+            builder: (context, state) {
+              var result;
+              if (state is CurrentTaskLoadingState) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is CurrentTaskLoadedState) {
+                result = state.response;
+              } else if (state is CurrentTaskFailedLoadingState) {
+                // dataLoadedError();
+              }
+              return StreamBuilder<QuerySnapshot>(
+                stream: result,
+                builder: (context, snapshot) {
+                  int currentTasks = 0;
+                  int doneTasks = 0;
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    snapshot.data!.docs.forEach((DocumentSnapshot element) {
+                      Map<String, dynamic> task =
+                          element.data()! as Map<String, dynamic>;
+                      TaskModel model = TaskModel.fromJson(task);
+                      if (model.isDone == true) {
+                        doneTasks++;
+                      } else if (model.isDone == false) {
+                        currentTasks++;
+                      }
+                    });
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 10.0,
                         ),
-                        child: Center(
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 16.0,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "My Tasks",
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontFamily: appFont1,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => CreateTask(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                height: 18.0,
+                                width: 18.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: addColor,
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                    size: 14.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                HomeBody(
-                  icon: Icons.timer,
-                  color: todoColor,
-                  title: "To Do",
-                  sunTitle: "10 tasks now , 1 started",
-                  onClick: () {},
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                HomeBody(
-                  icon: Icons.published_with_changes_outlined,
-                  color: onprogressColor,
-                  title: "In Progress",
-                  sunTitle: "1 task now , 1 started",
-                  onClick: () {},
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                HomeBody(
-                  icon: Icons.done,
-                  color: doneColor,
-                  title: "Done",
-                  sunTitle: "18 tasks now , 13 started",
-                  onClick: () {},
-                ),
-                SizedBox(
-                  height: 25.0,
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Active Projects",
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontFamily: appFont1,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                        SizedBox(
+                          height: 18,
+                        ),
+                        HomeBody(
+                          icon: Icons.timer,
+                          color: todoColor,
+                          title: "To Do",
+                          sunTitle: "$currentTasks tasks now ",
+                          onClick: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ToDoTasks(),
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: 14.0,
+                        ),
+                        HomeBody(
+                          icon: Icons.delete,
+                          color: onprogressColor,
+                          title: "Archive",
+                          sunTitle: "some tasks here",
+                          onClick: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ArchiveTasks(),
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: 14.0,
+                        ),
+                        HomeBody(
+                          icon: Icons.done,
+                          color: doneColor,
+                          title: "Done",
+                          sunTitle: "$doneTasks tasks now ",
+                          onClick: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => DoneTasks(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  }
+                },
+              );
+            },
           ),
         ),
       ),
@@ -325,6 +397,7 @@ class _HomeState extends State<Home> {
 
   Widget _footer() {
     return Expanded(
+      flex: 2,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Container(
@@ -332,49 +405,160 @@ class _HomeState extends State<Home> {
           width: double.infinity,
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                ActivityView(
-                  color: Colors.blue,
-                  title: "Sports",
-                  desciption: "desciption",
-                  rating: 20,
-                  percent: 0.8,
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-                ActivityView(
-                  color: Colors.orange,
-                  title: "Work",
-                  desciption: "desciption",
-                  rating: 40,
-                  percent: 0.7,
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-                ActivityView(
-                  color: Colors.red,
-                  title: "Travel",
-                  desciption: "desciption",
-                  rating: 30,
-                  percent: 0.5,
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-                ActivityView(
-                  color: Colors.deepOrange[300],
-                  title: "Personal",
-                  desciption: "desciption",
-                  rating: 60,
-                  percent: 0.3,
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-              ],
+            child: BlocBuilder<TaskBloc, TaskStates>(
+              builder: (context, state) {
+                var result;
+                if (state is CurrentTaskLoadingState) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is CurrentTaskLoadedState) {
+                  result = state.response;
+                } else if (state is CurrentTaskFailedLoadingState) {
+                  // dataLoadedError();
+                }
+                return StreamBuilder<QuerySnapshot>(
+                  stream: result,
+                  builder: (context, snapshot) {
+                    int studyTasks = 0;
+                    int workTasks = 0;
+                    int personalTasks = 0;
+                    int doneStudyTasks = 0;
+                    int doneWorkTasks = 0;
+                    int donePersonalTasks = 0;
+                    double doneStudyPercent = 0.0;
+                    double doneWorkPercent = 0.0;
+                    double donePersonalPercent = 0.0;
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      snapshot.data!.docs.forEach((DocumentSnapshot element) {
+                        Map<String, dynamic> task =
+                            element.data()! as Map<String, dynamic>;
+                        TaskModel model = TaskModel.fromJson(task);
+                        if (model.category == "study") {
+                          studyTasks++;
+                          if (model.isDone == true) {
+                            doneStudyTasks++;
+                          }
+                        } else if (model.category == "work") {
+                          workTasks++;
+                          if (model.isDone == true) {
+                            doneWorkTasks++;
+                          }
+                        } else if (model.category == "personal") {
+                          personalTasks++;
+                          if (model.isDone == true) {
+                            donePersonalTasks++;
+                          }
+                        }
+                      });
+                      if (doneStudyTasks / 10 < 1) {
+                        doneStudyPercent = doneStudyTasks / 10;
+                      } else {
+                        doneStudyPercent = 1;
+                      }
+                      if (doneWorkTasks / 10 < 1) {
+                        doneWorkPercent = doneWorkTasks / 10;
+                      } else {
+                        doneWorkPercent = 1;
+                      }
+                      if (donePersonalTasks / 10 < 1) {
+                        donePersonalPercent = donePersonalTasks / 10;
+                      } else {
+                        donePersonalPercent = 1;
+                      }
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Active Projects",
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                fontFamily: appFont1,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ActivityType(type: "study"),
+                                    ),
+                                  );
+                                },
+                                child: ActivityView(
+                                  color: Colors.blue,
+                                  title: "Study",
+                                  desciption: "desciption",
+                                  rating: studyTasks,
+                                  percent: doneStudyPercent,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ActivityType(type: "work"),
+                                    ),
+                                  );
+                                },
+                                child: ActivityView(
+                                  color: Colors.orange,
+                                  title: "Work",
+                                  desciption: "desciption",
+                                  rating: workTasks,
+                                  percent: doneWorkPercent,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ActivityType(type: "personal"),
+                                    ),
+                                  );
+                                },
+                                child: ActivityView(
+                                  color: Colors.deepOrange[300],
+                                  title: "Personal",
+                                  desciption: "desciption",
+                                  rating: personalTasks,
+                                  percent: donePersonalPercent,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                );
+              },
             ),
           ),
         ),

@@ -22,13 +22,21 @@ const String shareAppImage = "assets/images/share.png";
 const String changePassword = "assets/images/changepassword.png";
 const String editImage = "assets/images/edit.png";
 const String listIcon = "assets/images/listIcon.png";
+const String emptyData = "assets/images/emptysearch.png";
 
 void snackbarValidate(String s, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
         s,
+        style: TextStyle(
+          fontFamily: appFont1,
+          fontSize: 16.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
       ),
+      backgroundColor: Colors.grey[200],
     ),
   );
 }
