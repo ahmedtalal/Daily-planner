@@ -11,3 +11,5 @@ class DeleteTaskEvent extends TaskEvents {}
 class ArchiveTaskEvent extends TaskEvents {}
 
 class ShowArchiveTasksEvent extends TaskEvents {}
+
+class DeleteArchiveTaskEvent extends TaskEvents {}

@@ -231,45 +231,66 @@ class _TaskDetailsArchiveState extends State<TaskDetailsArchive> {
                 SizedBox(
                   height: 20.0,
                 ),
-                BlocListener<TaskBloc, TaskStates>(
-                  listener: (context, state) {
-                    if (state is ModifyTaskSuccessState) {
-                      //Navigator.of(context).pop();
-                      setState(() {
-                        snackbarValidate(state.mesage, context);
-                        isProgressed = false;
-                      });
-                    } else if (state is ModifyTaskFailedState) {
-                      snackbarValidate(state.error, context);
-                    }
-                  },
-                  child: Center(
-                    child: BlocBuilder<TaskBloc, TaskStates>(
-                      builder: (context, state) {
-                        return _taskButton(
-                          "ReUse",
-                          () {
+                Row(
+                  children: [
+                    Expanded(
+                      child: BlocListener<TaskBloc, TaskStates>(
+                        listener: (context, state) {
+                          if (state is ModifyTaskSuccessState) {
+                            //Navigator.of(context).pop();
                             setState(() {
-                              if (formKey.currentState!.validate()) {
-                                taskProvider.taskModel = TaskModel(
-                                  taskId: widget.data["taskId"],
-                                  task: taskController.text,
-                                  date: dateController.text,
-                                  description: descriptionController.text,
-                                  category: type,
-                                  firstTime: startTimeController.text,
-                                  lastTime: endTimeController.text,
-                                  isDone: false,
-                                );
-                                taskProvider.add(UpdateTaskEvent());
-                                isProgressed = true;
-                              }
+                              snackbarValidate(state.mesage, context);
+                              isProgressed = false;
                             });
-                          },
-                        );
-                      },
+                          } else if (state is ModifyTaskFailedState) {
+                            snackbarValidate(state.error, context);
+                          }
+                        },
+                        child: Center(
+                          child: BlocBuilder<TaskBloc, TaskStates>(
+                            builder: (context, state) {
+                              return _taskButton(
+                                "Reuse",
+                                () {
+                                  setState(() {
+                                    if (formKey.currentState!.validate()) {
+                                      taskProvider.taskModel = TaskModel(
+                                        taskId: widget.data["taskId"],
+                                        task: taskController.text,
+                                        date: dateController.text,
+                                        description: descriptionController.text,
+                                        category: type,
+                                        firstTime: startTimeController.text,
+                                        lastTime: endTimeController.text,
+                                        isDone: false,
+                                      );
+                                      taskProvider.add(UpdateTaskEvent());
+                                      isProgressed = true;
+                                    }
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 8.0),
+                    Expanded(
+                      child: _taskButton(
+                        "Delete",
+                        () {
+                          setState(() {
+                            if (formKey.currentState!.validate()) {
+                              taskProvider.taskId = widget.data["taskId"];
+                              isProgressed = true;
+                              taskProvider.add(DeleteArchiveTaskEvent());
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 8.0,

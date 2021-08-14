@@ -200,7 +200,9 @@ class _SettingpageState extends State<Settingpage> {
                 height: 10.0,
               ),
               SettingComponentsView(
-                onClick: () {},
+                onClick: () {
+                  shared("Daily Planner App", context);
+                },
                 hint: "Share App",
                 icon: shareAppImage,
                 color: Colors.orange,
@@ -209,7 +211,9 @@ class _SettingpageState extends State<Settingpage> {
                 height: 10.0,
               ),
               SettingComponentsView(
-                onClick: () {},
+                onClick: () {
+                  launchUrl();
+                },
                 hint: "Rate App",
                 icon: rateAppImage,
                 color: doneColor,

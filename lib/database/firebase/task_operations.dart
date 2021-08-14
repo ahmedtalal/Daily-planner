@@ -65,6 +65,16 @@ class TaskOperations extends FirebaseRepositoryModel {
     return result;
   }
 
+  deleteArchiveTask(model) async {
+    bool result = false;
+    DocumentReference docRef =
+        _collRef1.doc(_user.uid).collection("list").doc(model);
+    await docRef.delete().whenComplete(() {
+      result = true;
+    });
+    return result;
+  }
+
   getAllArchiveData(model) {
     return _collRef1.doc(_user.uid).collection("list").snapshots();
   }

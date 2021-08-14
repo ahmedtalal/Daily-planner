@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const String splash1 = "assets/images/splash1.png";
 const String splash2 = "assets/images/splash2.jpg";
@@ -39,4 +41,20 @@ void snackbarValidate(String s, BuildContext context) {
       backgroundColor: Colors.grey[200],
     ),
   );
+}
+
+String _url =
+    "https://play.google.com/store/apps/details?id=com.example.online_booking_places&referrer=utm_source%3Dgoogle";
+shared(String message, BuildContext context) {
+  final RenderBox box = context.findRenderObject() as RenderBox;
+  Share.share("${message + "the app link on google play : " + _url}",
+      sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+}
+
+launchUrl() async {
+  if (await canLaunch(_url)) {
+    await launch(_url);
+  } else {
+    throw "could not launch $_url";
+  }
 }

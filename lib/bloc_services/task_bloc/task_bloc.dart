@@ -74,6 +74,17 @@ class TaskBloc extends Bloc<TaskEvents, TaskStates> {
       } catch (e) {
         yield ArchiveTaskFailedLoadingState(error: e.toString());
       }
+    } else if (event is DeleteArchiveTaskEvent) {
+      try {
+        var response = await TaskOperations().deleteArchiveTask(taskId);
+        if (response == true) {
+          yield ModifyTaskSuccessState(mesage: "deleted successfully");
+        } else {
+          yield ModifyTaskFailedState(error: "unsuccessfully");
+        }
+      } catch (e) {
+        yield ModifyTaskFailedState(error: e.toString());
+      }
     }
   }
 }
