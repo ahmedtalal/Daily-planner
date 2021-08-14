@@ -19,8 +19,8 @@ class ActivityView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100.0,
-      width: 100.0,
+      height: 150.0,
+      width: 145.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
         color: color,
@@ -30,7 +30,7 @@ class ActivityView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: 15.0,
+            height: 20.0,
           ),
           _circularIndicator(rating),
           SizedBox(
@@ -44,15 +44,15 @@ class ActivityView extends StatelessWidget {
 
   Widget _circularIndicator(int rating) {
     return CircularPercentIndicator(
-      radius: 50.0,
+      radius: 60.0,
       animation: true,
       animationDuration: 1200,
-      lineWidth: 4.0,
+      lineWidth: 5.0,
       percent: percent,
       center: new Text(
         rating.toString(),
         style: new TextStyle(
-          fontSize: 15.0,
+          fontSize: 17.0,
           color: Colors.white,
           fontFamily: appFont1,
           fontWeight: FontWeight.bold,
@@ -68,7 +68,7 @@ class ActivityView extends StatelessWidget {
     return Text(
       title,
       style: TextStyle(
-        fontSize: 14.0,
+        fontSize: 17.0,
         fontFamily: appFont1,
         fontWeight: FontWeight.bold,
         color: Colors.white,

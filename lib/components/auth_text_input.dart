@@ -19,7 +19,7 @@ class AuthTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: message != "Description ..." ? 48.0 : null,
+      height: message != "Description ..." ? 50.0 : null,
       child: TextFormField(
         style: TextStyle(
           fontSize: 14.0,
@@ -28,7 +28,7 @@ class AuthTextInput extends StatelessWidget {
         initialValue: initialValue,
         onChanged: onClick,
         validator: onValidate,
-        maxLines: message == "Description ..." ? 2 : 1,
+        maxLines: message == "Description ..." ? 3 : 1,
         decoration: InputDecoration(
           labelText: message,
           prefixIcon: Icon(

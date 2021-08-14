@@ -71,7 +71,7 @@ class _TaskDetailsState extends State<TaskDetails> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 15.0,
+                  height: 22.0,
                 ),
                 _editTextField(
                   textController: taskController,
@@ -88,7 +88,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                   icon: Icons.add_task,
                 ),
                 SizedBox(
-                  height: 10.0,
+                  height: 15.0,
                 ),
                 _editTextField(
                   textController: descriptionController,
@@ -105,7 +105,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                   icon: Icons.description,
                 ),
                 SizedBox(
-                  height: 10.0,
+                  height: 15.0,
                 ),
                 _editTextField(
                   textController: dateController,
@@ -122,7 +122,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                   icon: Icons.date_range,
                 ),
                 SizedBox(
-                  height: 10.0,
+                  height: 15.0,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -147,7 +147,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                       ),
                     ),
                     SizedBox(
-                      width: 10.0,
+                      width: 13.0,
                     ),
                     Expanded(
                       child: Container(
@@ -171,18 +171,18 @@ class _TaskDetailsState extends State<TaskDetails> {
                   ],
                 ),
                 SizedBox(
-                  height: 10.0,
+                  height: 22.0,
                 ),
                 Text(
                   "Categories : ",
                   style: TextStyle(
-                    fontSize: 15.0,
+                    fontSize: 18.0,
                     fontFamily: appFont1,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(
-                  height: 10.0,
+                  height: 22.0,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -229,7 +229,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                   ],
                 ),
                 SizedBox(
-                  height: 20.0,
+                  height: 28.0,
                 ),
                 Row(
                   children: [
@@ -354,9 +354,9 @@ class _TaskDetailsState extends State<TaskDetails> {
     required var icon,
   }) {
     return Container(
-      height: message != "description" ? 45.0 : null,
+      height: message != "description" ? 50.0 : null,
       child: TextFormField(
-        maxLines: message == "description" ? 2 : 1,
+        maxLines: message == "description" ? 3 : 1,
         controller: textController,
         onChanged: onClick,
         validator: onValidate,

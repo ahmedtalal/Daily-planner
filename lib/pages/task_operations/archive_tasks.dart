@@ -4,9 +4,7 @@ import 'package:daily_planner/bloc_services/task_bloc/task_events.dart';
 import 'package:daily_planner/bloc_services/task_bloc/task_states.dart';
 import 'package:daily_planner/components/appbar_widget.dart';
 import 'package:daily_planner/components/data_loaded_error.dart';
-import 'package:daily_planner/components/task_view.dart';
 import 'package:daily_planner/components/task_view_archive.dart';
-import 'package:daily_planner/models/task_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,7 +25,10 @@ class _ArchiveTasksState extends State<ArchiveTasks> {
         height: double.infinity,
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10.0,
+            vertical: 16,
+          ),
           child: BlocBuilder<TaskBloc, TaskStates>(
             builder: (context, state) {
               var result;

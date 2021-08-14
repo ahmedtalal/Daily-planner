@@ -13,7 +13,7 @@ Widget categoriesWidget({
     child: Container(
       alignment: Alignment.center,
       padding: EdgeInsets.only(bottom: 5.0),
-      height: 35.0,
+      height: 38.0,
       width: 95.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(40.0),

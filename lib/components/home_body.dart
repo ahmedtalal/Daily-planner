@@ -24,16 +24,16 @@ class HomeBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
-            radius: 13.0,
+            radius: 15.0,
             backgroundColor: color,
             child: Icon(
               icon,
-              size: 12.0,
+              size: 15.0,
               color: Colors.white,
             ),
           ),
           SizedBox(
-            width: 9.0,
+            width: 11.0,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,24 +42,24 @@ class HomeBody extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 14.0,
+                  fontSize: 16.0,
                   fontFamily: appFont1,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               SizedBox(
-                height: 4.0,
+                height: 6.0,
               ),
               Text(
                 sunTitle,
                 style: TextStyle(
-                  fontSize: 12.0,
+                  fontSize: 13.0,
                   fontFamily: appFont1,
                   color: Colors.black54,
                 ),
               ),
               SizedBox(
-                height: 6.0,
+                height: 10.0,
               ),
               Container(
                 height: 0.8,

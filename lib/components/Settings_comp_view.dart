@@ -23,21 +23,21 @@ class SettingComponentsView extends StatelessWidget {
           Row(
             children: [
               CircleAvatar(
-                radius: 13.0,
+                radius: 15.0,
                 backgroundColor: color,
                 child: Image(
                   image: AssetImage(icon),
-                  height: 12.0,
+                  height: 13.0,
                   color: Colors.white,
                 ),
               ),
               SizedBox(
-                width: 10.0,
+                width: 12.0,
               ),
               Text(
                 hint,
                 style: TextStyle(
-                  fontSize: 12.0,
+                  fontSize: 14.0,
                   fontFamily: appFont1,
                   color: hint == "LogOut" ? Colors.purple : null,
                   fontWeight: FontWeight.bold,
@@ -47,7 +47,7 @@ class SettingComponentsView extends StatelessWidget {
           ),
           Icon(
             Icons.arrow_forward_ios,
-            size: 13.0,
+            size: 15.0,
           ),
         ],
       ),

@@ -36,7 +36,10 @@ class _TodayTasksState extends State<TodayTasks> {
         height: double.infinity,
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10.0,
+            vertical: 20.0,
+          ),
           child: BlocBuilder<TaskBloc, TaskStates>(
             builder: (context, state) {
               var result;

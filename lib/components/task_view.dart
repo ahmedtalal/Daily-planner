@@ -43,18 +43,18 @@ class TaskView extends StatelessWidget {
                   Text(
                     "Task Name : ",
                     style: TextStyle(
-                      fontSize: 15.0,
+                      fontSize: 17.0,
                       fontFamily: appFont1,
                       color: Colors.black,
                     ),
                   ),
                   SizedBox(
-                    width: 10.0,
+                    width: 13.0,
                   ),
                   Text(
                     taskModel["task"],
                     style: TextStyle(
-                      fontSize: 14.0,
+                      fontSize: 15.0,
                       fontFamily: appFont1,
                       color: Colors.grey[700],
                     ),
@@ -62,25 +62,25 @@ class TaskView extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: 2.0,
+                height: 6.0,
               ),
               Row(
                 children: [
                   Text(
                     "Period: ",
                     style: TextStyle(
-                      fontSize: 15.0,
+                      fontSize: 17.0,
                       fontFamily: appFont1,
                       color: Colors.black,
                     ),
                   ),
                   SizedBox(
-                    width: 10.0,
+                    width: 13.0,
                   ),
                   Text(
                     "${taskModel["firstTime"]} to ${taskModel["lastTime"]}",
                     style: TextStyle(
-                      fontSize: 14.0,
+                      fontSize: 15.0,
                       fontFamily: appFont1,
                       color: Colors.grey[700],
                     ),
@@ -88,31 +88,32 @@ class TaskView extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: 2.0,
+                height: 6.0,
               ),
               Row(
                 children: [
                   Text(
                     "Type : ",
                     style: TextStyle(
-                      fontSize: 15.0,
+                      fontSize: 17.0,
                       fontFamily: appFont1,
                       color: Colors.black,
                     ),
                   ),
                   SizedBox(
-                    width: 10.0,
+                    width: 13.0,
                   ),
                   Text(
                     taskModel["category"],
                     style: TextStyle(
-                      fontSize: 14.0,
+                      fontSize: 15.0,
                       fontFamily: appFont1,
                       color: Colors.grey[700],
                     ),
                   ),
                 ],
               ),
+              const SizedBox(height: 10),
               Container(
                 width: double.infinity,
                 child: Align(
@@ -123,19 +124,19 @@ class TaskView extends StatelessWidget {
                       Text(
                         status,
                         style: TextStyle(
-                          fontSize: 12.0,
+                          fontSize: 14.0,
                           fontFamily: appFont1,
                           color: Colors.teal,
                         ),
                       ),
                       SizedBox(
-                        width: 8.0,
+                        width: 11.0,
                       ),
                       Icon(
                         taskModel["isDone"] == false
                             ? Icons.cancel
                             : Icons.check_circle,
-                        size: 18.0,
+                        size: 20.0,
                         color: Colors.teal,
                       ),
                     ],

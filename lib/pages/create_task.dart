@@ -65,7 +65,7 @@ class _CreateTaskState extends State<CreateTask> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              height: 10.0,
+                              height: 30.0,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,12 +127,13 @@ class _CreateTaskState extends State<CreateTask> {
                               ],
                             ),
                             SizedBox(
-                              height: 16.0,
+                              height: 20.0,
                             ),
                             Form(
                               key: formKey,
                               child: Column(
                                 children: [
+                                  const SizedBox(height: 20.0),
                                   AuthTextInput(
                                     message: "Task ...",
                                     icon: Icons.add_task,
@@ -148,7 +149,7 @@ class _CreateTaskState extends State<CreateTask> {
                                     initialValue: "",
                                   ),
                                   SizedBox(
-                                    height: 10.0,
+                                    height: 15.0,
                                   ),
                                   AuthTextInput(
                                     message: "date ...",
@@ -165,7 +166,7 @@ class _CreateTaskState extends State<CreateTask> {
                                     initialValue: currentDate,
                                   ),
                                   SizedBox(
-                                    height: 10.0,
+                                    height: 15.0,
                                   ),
                                   AuthTextInput(
                                     initialValue: "",
@@ -185,19 +186,19 @@ class _CreateTaskState extends State<CreateTask> {
                               ),
                             ),
                             SizedBox(
-                              height: 9.0,
+                              height: 25.0,
                             ),
                             Text(
                               "Categories",
                               style: TextStyle(
-                                fontSize: 18.0,
+                                fontSize: 22.0,
                                 fontFamily: appFont1,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),
                             ),
                             SizedBox(
-                              height: 4.0,
+                              height: 15.0,
                             ),
                             Container(
                               width: 75.0,
@@ -208,7 +209,7 @@ class _CreateTaskState extends State<CreateTask> {
                               ),
                             ),
                             SizedBox(
-                              height: 10.0,
+                              height: 20.0,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -255,7 +256,7 @@ class _CreateTaskState extends State<CreateTask> {
                               ],
                             ),
                             SizedBox(
-                              height: 20.0,
+                              height: 25.0,
                             ),
                             Center(
                               child: BlocListener<TaskBloc, TaskStates>(

@@ -70,7 +70,7 @@ class _HomeState extends State<Home> {
 
   Widget _header(var size) {
     return Container(
-      height: 95,
+      height: 150.0,
       width: double.infinity,
       decoration: BoxDecoration(
         color: homeColor,
@@ -105,7 +105,7 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 10.0,
+                      height: 30.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -133,12 +133,12 @@ class _HomeState extends State<Home> {
                               },
                               child: Icon(
                                 Icons.settings,
-                                size: 17.0,
+                                size: 19.0,
                                 color: Colors.white,
                               ),
                             ),
                             SizedBox(
-                              width: 8.0,
+                              width: 12.0,
                             ),
                             InkWell(
                               onTap: () {
@@ -150,16 +150,16 @@ class _HomeState extends State<Home> {
                               },
                               child: Icon(
                                 Icons.search,
-                                size: 17.0,
+                                size: 19.0,
                                 color: Colors.white,
                               ),
                             ),
                             SizedBox(
-                              width: 15.0,
+                              width: 20.0,
                             ),
                             Container(
-                              height: 30,
-                              width: 30,
+                              height: 35,
+                              width: 35,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
@@ -172,8 +172,8 @@ class _HomeState extends State<Home> {
                                 backgroundColor: homeColor,
                                 child: result == false && image == "null"
                                     ? Image(
-                                        height: 16.0,
-                                        width: 16.0,
+                                        height: 15.0,
+                                        width: 15.0,
                                         image: AssetImage(
                                           userImage,
                                         ),
@@ -199,7 +199,7 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                     SizedBox(
-                      height: 19.0,
+                      height: 30.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -208,7 +208,7 @@ class _HomeState extends State<Home> {
                         Text(
                           "today tasks",
                           style: TextStyle(
-                            fontSize: 15.0,
+                            fontSize: 18.0,
                             fontFamily: appFont1,
                             color: Colors.white,
                           ),
@@ -224,8 +224,8 @@ class _HomeState extends State<Home> {
                           child: Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.only(top: 5.0),
-                            width: 25.0,
-                            height: 16.0,
+                            width: 30.0,
+                            height: 21.0,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
                               border: Border.all(
@@ -235,7 +235,7 @@ class _HomeState extends State<Home> {
                             ),
                             child: Icon(
                               Icons.arrow_right,
-                              size: 16.0,
+                              size: 22.0,
                               color: Colors.white,
                             ),
                           ),
@@ -260,44 +260,47 @@ class _HomeState extends State<Home> {
         child: Container(
           height: double.infinity,
           width: double.infinity,
-          child: BlocBuilder<TaskBloc, TaskStates>(
-            builder: (context, state) {
-              var result;
-              if (state is CurrentTaskLoadingState) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state is CurrentTaskLoadedState) {
-                result = state.response;
-              } else if (state is CurrentTaskFailedLoadingState) {
-                // dataLoadedError();
-              }
-              return StreamBuilder<QuerySnapshot>(
-                stream: result,
-                builder: (context, snapshot) {
-                  int currentTasks = 0;
-                  int doneTasks = 0;
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else {
-                    snapshot.data!.docs.forEach((DocumentSnapshot element) {
-                      Map<String, dynamic> task =
-                          element.data()! as Map<String, dynamic>;
-                      TaskModel model = TaskModel.fromJson(task);
-                      if (model.isDone == true) {
-                        doneTasks++;
-                      } else if (model.isDone == false) {
-                        currentTasks++;
-                      }
-                    });
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: BlocBuilder<TaskBloc, TaskStates>(
+              builder: (context, state) {
+                var result;
+                if (state is CurrentTaskLoadingState) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is CurrentTaskLoadedState) {
+                  result = state.response;
+                } else if (state is CurrentTaskFailedLoadingState) {
+                  // dataLoadedError();
+                }
+                return StreamBuilder<QuerySnapshot>(
+                  stream: result,
+                  builder: (context, snapshot) {
+                    int currentTasks = 0;
+                    int doneTasks = 0;
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasData) {
+                      snapshot.data!.docs.forEach((DocumentSnapshot element) {
+                        Map<String, dynamic> task =
+                            element.data()! as Map<String, dynamic>;
+                        TaskModel model = TaskModel.fromJson(task);
+                        if (model.isDone == true) {
+                          doneTasks++;
+                        } else if (model.isDone == false) {
+                          currentTasks++;
+                        }
+                      });
+                    }
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -305,7 +308,7 @@ class _HomeState extends State<Home> {
                             Text(
                               "My Tasks",
                               style: TextStyle(
-                                fontSize: 18.0,
+                                fontSize: 19.0,
                                 fontFamily: appFont1,
                               ),
                             ),
@@ -318,8 +321,8 @@ class _HomeState extends State<Home> {
                                 );
                               },
                               child: Container(
-                                height: 18.0,
-                                width: 18.0,
+                                height: 22.0,
+                                width: 22.0,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: addColor,
@@ -328,7 +331,7 @@ class _HomeState extends State<Home> {
                                   child: Icon(
                                     Icons.add,
                                     color: Colors.white,
-                                    size: 14.0,
+                                    size: 17.0,
                                   ),
                                 ),
                               ),
@@ -336,7 +339,7 @@ class _HomeState extends State<Home> {
                           ],
                         ),
                         SizedBox(
-                          height: 18,
+                          height: 25,
                         ),
                         HomeBody(
                           icon: Icons.timer,
@@ -352,7 +355,7 @@ class _HomeState extends State<Home> {
                           },
                         ),
                         SizedBox(
-                          height: 14.0,
+                          height: 23.0,
                         ),
                         HomeBody(
                           icon: Icons.delete,
@@ -368,7 +371,7 @@ class _HomeState extends State<Home> {
                           },
                         ),
                         SizedBox(
-                          height: 14.0,
+                          height: 23.0,
                         ),
                         HomeBody(
                           icon: Icons.done,
@@ -385,10 +388,10 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     );
-                  }
-                },
-              );
-            },
+                  },
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -404,7 +407,7 @@ class _HomeState extends State<Home> {
           height: double.infinity,
           width: double.infinity,
           child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
+            scrollDirection: Axis.vertical,
             child: BlocBuilder<TaskBloc, TaskStates>(
               builder: (context, state) {
                 var result;
@@ -429,11 +432,11 @@ class _HomeState extends State<Home> {
                     double doneStudyPercent = 0.0;
                     double doneWorkPercent = 0.0;
                     double donePersonalPercent = 0.0;
-                    if (!snapshot.hasData) {
+                    if (snapshot.hasError) {
                       return Center(
                         child: CircularProgressIndicator(),
                       );
-                    } else {
+                    } else if (snapshot.hasData) {
                       snapshot.data!.docs.forEach((DocumentSnapshot element) {
                         Map<String, dynamic> task =
                             element.data()! as Map<String, dynamic>;
@@ -470,26 +473,29 @@ class _HomeState extends State<Home> {
                       } else {
                         donePersonalPercent = 1;
                       }
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Active Projects",
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                fontFamily: appFont1,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
-                              ),
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Active Projects",
+                            style: TextStyle(
+                              fontSize: 17.0,
+                              fontFamily: appFont1,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
                             ),
                           ),
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                          Row(
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
                             children: [
                               InkWell(
                                 onTap: () {
@@ -553,9 +559,9 @@ class _HomeState extends State<Home> {
                               ),
                             ],
                           ),
-                        ],
-                      );
-                    }
+                        ),
+                      ],
+                    );
                   },
                 );
               },

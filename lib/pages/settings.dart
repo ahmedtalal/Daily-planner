@@ -47,7 +47,7 @@ class _SettingpageState extends State<Settingpage> {
           child: ListView(
             children: [
               SizedBox(
-                height: 20.0,
+                height: 25.0,
               ),
               BlocBuilder<UserBloc, UserStates>(
                 builder: (context, state) {
@@ -77,6 +77,7 @@ class _SettingpageState extends State<Settingpage> {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          const SizedBox(height: 20),
                           Container(
                             height: 65.0,
                             width: 70.0,
@@ -138,7 +139,7 @@ class _SettingpageState extends State<Settingpage> {
                 },
               ),
               SizedBox(
-                height: 10.0,
+                height: 15.0,
               ),
               Text(
                 "Profile",
@@ -150,7 +151,7 @@ class _SettingpageState extends State<Settingpage> {
                 ),
               ),
               SizedBox(
-                height: 8.0,
+                height: 10.0,
               ),
               SettingComponentsView(
                 onClick: () {
@@ -170,7 +171,7 @@ class _SettingpageState extends State<Settingpage> {
                 color: Colors.red,
               ),
               SizedBox(
-                height: 8.0,
+                height: 10.0,
               ),
               SettingComponentsView(
                 onClick: () {
