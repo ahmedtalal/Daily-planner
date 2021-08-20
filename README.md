@@ -4,6 +4,7 @@ A daily planner app is an app that helps you get organized and keeps all of your
 
 
 -Technologies used :
+
 1-flutter .
 2-dart .
 3-bloc pattern .
@@ -14,8 +15,8 @@ A daily planner app is an app that helps you get organized and keeps all of your
 8- firebase storage.
 
 These are some screenshots about my app, you can see all the screens by opening the appUi folder. 
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
 <img src="appUi/photo1.png" width="600" height="600">
 <img src="appUi/photo2.png" width="600" height="600">
 <img src="appUi/photo3.png" width="600" height="600">
