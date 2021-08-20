@@ -1,6 +1,8 @@
 # daily_planner
 
 A daily planner app is an app that helps you get organized and keeps all of your daily tasks
+
+
 -Technologies used :
 1-flutter .
 2-dart .
