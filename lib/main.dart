@@ -3,6 +3,7 @@ import 'package:daily_planner/bloc_services/user_bloc/user_bloc.dart';
 import 'package:daily_planner/database/firebase/auth_operations.dart';
 import 'package:daily_planner/database/firebase/task_operations.dart';
 import 'package:daily_planner/database/firebase/user_operations.dart';
+import 'package:daily_planner/pages/constants.dart';
 import 'package:daily_planner/pages/home.dart';
 import 'package:daily_planner/pages/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: Colors.white,
+        statusBarColor: homeColor,
         statusBarIconBrightness: Brightness.dark,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),

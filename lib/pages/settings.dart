@@ -29,7 +29,6 @@ class _SettingpageState extends State<Settingpage> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
     var authProvider = BlocProvider.of<AuthBloc>(context);
     var userProvider = BlocProvider.of<UserBloc>(context);
     userProvider.model = FirebaseAuth.instance.currentUser!.uid;
@@ -47,7 +46,7 @@ class _SettingpageState extends State<Settingpage> {
           child: ListView(
             children: [
               SizedBox(
-                height: 25.0,
+                height: 17.0,
               ),
               BlocBuilder<UserBloc, UserStates>(
                 builder: (context, state) {

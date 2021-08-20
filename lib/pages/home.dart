@@ -459,17 +459,17 @@ class _HomeState extends State<Home> {
                         }
                       });
                       if (doneStudyTasks / 10 < 1) {
-                        doneStudyPercent = doneStudyTasks / 10;
+                        doneStudyPercent = doneStudyTasks / 10 / 10;
                       } else {
                         doneStudyPercent = 1;
                       }
                       if (doneWorkTasks / 10 < 1) {
-                        doneWorkPercent = doneWorkTasks / 10;
+                        doneWorkPercent = doneWorkTasks / 10 / 10;
                       } else {
                         doneWorkPercent = 1;
                       }
                       if (donePersonalTasks / 10 < 1) {
-                        donePersonalPercent = donePersonalTasks / 10;
+                        donePersonalPercent = donePersonalTasks / 10 / 10;
                       } else {
                         donePersonalPercent = 1;
                       }

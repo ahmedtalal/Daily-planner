@@ -5,7 +5,6 @@ import 'package:daily_planner/bloc_services/user_bloc/user_bloc.dart';
 import 'package:daily_planner/bloc_services/user_bloc/user_events.dart';
 import 'package:daily_planner/components/appbar_widget.dart';
 import 'package:daily_planner/components/button_action.dart';
-import 'package:daily_planner/components/switch_pages.dart';
 import 'package:daily_planner/components/text_input_controller.dart';
 import 'package:daily_planner/models/user_model.dart';
 import 'package:daily_planner/pages/constants.dart';
@@ -47,7 +46,6 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     var userProvider = BlocProvider.of<UserBloc>(context);
 
     return Scaffold(
@@ -96,7 +94,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                       IconButton(
                         onPressed: () {
-                          chooseImageFile();
+                          _chooseImageFile();
                         },
                         icon: Icon(
                           Icons.camera_alt,
@@ -156,6 +154,7 @@ class _EditProfileState extends State<EditProfile> {
                       if (state is UserUpdateSucessState) {
                         setState(() {
                           snackbarValidate(state.message, context);
+                          isProgress = false;
                         });
                       } else if (state is UserUpdateFailedState) {
                         setState(() {
@@ -175,8 +174,8 @@ class _EditProfileState extends State<EditProfile> {
                                   isProgress = true;
                                   userProvider.model1 = UserModel.anotherObj(
                                     id: widget.id,
-                                    name: name,
-                                    email: email,
+                                    name: nameController.text,
+                                    email: emailController.text,
                                     image: imageUrl,
                                   );
                                   userProvider.add(UserUpdateEvent());
@@ -199,15 +198,15 @@ class _EditProfileState extends State<EditProfile> {
   }
 
 // fetch photo from gallary
-  Future chooseImageFile() async {
+  Future _chooseImageFile() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     imageFile = File(pickedFile!.path);
-    uploadImage();
+    _uploadImage();
   }
 
   // upload the image to firebase storage
-  uploadImage() async {
+  _uploadImage() async {
     String fileName = basename(imageFile.path);
     Reference storageReference =
         FirebaseStorage.instance.ref().child('usersImages/$fileName');

@@ -38,8 +38,9 @@ class TaskOperations extends FirebaseRepositoryModel {
 
   @override
   getSpecialData(model) {
-    // TODO: implement getSpecialData
-    throw UnimplementedError();
+    DocumentReference docRef =
+        _collRef.doc(_user.uid).collection("list").doc(model);
+    return docRef.snapshots();
   }
 
   @override

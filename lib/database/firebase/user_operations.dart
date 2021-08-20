@@ -19,15 +19,19 @@ class UserOperations extends FirebaseRepositoryModel {
   }
 
   @override
-  deleteData(model) {
-    // TODO: implement deleteData
-    throw UnimplementedError();
+  deleteData(model) async {
+    bool result = false;
+    CollectionReference collRef = _firestore.collection("Users");
+    DocumentReference docRef = collRef.doc(model);
+    await docRef.delete().whenComplete(() {
+      result = true;
+    });
+    return result;
   }
 
   @override
   getAllData(model) {
-    // TODO: implement getAllData
-    throw UnimplementedError();
+    return _firestore.collection("Users").snapshots();
   }
 
   @override

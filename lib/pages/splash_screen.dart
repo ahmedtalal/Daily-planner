@@ -1,5 +1,5 @@
 import 'package:daily_planner/components/button_action.dart';
-import 'package:daily_planner/pages/auth/register.dart';
+import 'package:daily_planner/pages/auth/auth_page.dart';
 import 'package:daily_planner/pages/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -58,7 +58,7 @@ class SplashScreen extends StatelessWidget {
                 onClick: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => Register(),
+                      builder: (context) => AuthPage(),
                     ),
                   );
                 },

@@ -221,7 +221,7 @@ class _CreateTaskState extends State<CreateTask> {
                                     setState(() {
                                       color = Colors.red;
                                       coloredIndex = 1;
-                                      type = "Study";
+                                      type = "study";
                                     });
                                   },
                                   color: color,

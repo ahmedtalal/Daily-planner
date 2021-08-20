@@ -3,9 +3,9 @@ import 'package:daily_planner/bloc_services/auth_bloc/auth_bloc.dart';
 import 'package:daily_planner/bloc_services/auth_bloc/auth_states.dart';
 import 'package:daily_planner/components/appbar_widget.dart';
 import 'package:daily_planner/components/auth_text_input.dart';
-import 'package:daily_planner/components/switch_pages.dart';
 import 'package:daily_planner/pages/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
@@ -17,9 +17,17 @@ class ChangePassword extends StatefulWidget {
 class _ChangePasswordState extends State<ChangePassword> {
   var newPassword;
   bool isProgressed = false;
+  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: homeColor,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
     var size = MediaQuery.of(context).size;
     var authProvider = BlocProvider.of<AuthBloc>(context);
 
@@ -39,6 +47,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   height: 15.0,
                 ),
                 Form(
+                  key: formKey,
                   child: Column(
                     children: [
                       Container(
@@ -75,35 +84,39 @@ class _ChangePasswordState extends State<ChangePassword> {
                   },
                   child: BlocBuilder<AuthBloc, AuthStates>(
                     builder: (context, state) {
-                      return InkWell(
-                        onTap: () {
-                          setState(() {
-                            isProgressed = true;
-                          });
-                          print(newPassword);
-                          authProvider.model = newPassword;
-                          authProvider.add(UpdatePasswordEvent());
-                        },
-                        child: Container(
-                          width: size.width * 0.7,
-                          height: size.height * 0.076,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromRGBO(143, 148, 251, 1),
-                                Color.fromRGBO(143, 148, 251, .6),
-                              ],
+                      return Center(
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              if (formKey.currentState!.validate()) {
+                                isProgressed = true;
+                                print(newPassword);
+                                authProvider.model = newPassword;
+                                authProvider.add(UpdatePasswordEvent());
+                              }
+                            });
+                          },
+                          child: Container(
+                            width: size.width * 0.7,
+                            height: size.height * 0.076,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromRGBO(143, 148, 251, 1),
+                                  Color.fromRGBO(143, 148, 251, .6),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Update",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontFamily: appFont1,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                            child: Center(
+                              child: Text(
+                                "Update",
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  fontFamily: appFont1,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),

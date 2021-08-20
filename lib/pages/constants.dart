@@ -44,7 +44,7 @@ void snackbarValidate(String s, BuildContext context) {
 }
 
 String _url =
-    "https://play.google.com/store/apps/details?id=com.example.online_booking_places&referrer=utm_source%3Dgoogle";
+    "https://play.google.com/store/apps/details?id=ahmed.coder.daily_planner&referrer=utm_source%3Dgoogle";
 shared(String message, BuildContext context) {
   final RenderBox box = context.findRenderObject() as RenderBox;
   Share.share("${message + "the app link on google play : " + _url}",

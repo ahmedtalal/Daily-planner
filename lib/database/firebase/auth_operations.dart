@@ -48,7 +48,6 @@ class AuthOperations extends AuthRepositoryModel {
         email: model.email,
         image: model.image,
       );
-      print("object");
       result = await _userOperations.addData(userModel);
     }
     return result;
