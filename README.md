@@ -1,17 +1,17 @@
 # daily_planner
 
 A daily planner app is an app that helps you get organized and keeps all of your daily tasks
+-Technologies used :
+1-flutter .
+2-dart .
+3-bloc pattern .
+4-repository.
+5-dependency injection.
+6-firebase authentication.
+7-firestore database.
+8- firebase storage.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
+These are some screenshots about my app, you can see all the screens by opening the appUi folder. 
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 <img src="appUi/photo1.png" width="600" height="600">
